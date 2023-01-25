@@ -59,14 +59,14 @@ def bot():
         if r.status_code == 200:
             text = str(r.url)
         else:
-            text = 'Ik kan geen goeie wiki vinden op dit moment, alleen een foutmelding'
+            text = 'Ik kan geen fatsoenlijke wiki vinden op dit moment, alleen een foutmelding'
             message.media('https://http.cat/' + str(r.status_code))
         message.body(text)
 
         responded = True
 
     if not responded:
-        message.body('Er gaat its niet helemaal lekker')
+        message.body('Er gaat iets niet helemaal lekker')
 
     return str(response)
 
