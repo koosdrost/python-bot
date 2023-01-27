@@ -24,35 +24,13 @@ def bot():
         message.body(quote)
         responded = True
 
-    if 'kat' in incoming_msg:
+    if 'kat' in incoming_msg and not responded:
         # return a cat pic
         message.media('https://cataas.com/cat')
 
         responded = True
 
-    if 'http' in incoming_msg:
-        # return a http cat pic
-        message.media('https://http.cat/' + incoming_msg[5:])
-
-        responded = True
-
-    if 'vacatures' in incoming_msg:
-        # search for jobs
-        url = 'https://conspect.nl/vacatures'
-        req = urllib.request.Request(url)
-        text = urllib.request.urlopen(req).read()
-
-        soup = BeautifulSoup(str(text), 'html.parser')
-        functies = soup.findAll('div', {'class':'elementor-button-wrapper'})
-
-        message.body('Alle huidige vacatures bij Conspect')
-        eind = len(functies)
-        for item in functies[3:eind-3]:
-            response.message(url + str(item.find('a')['href']))
-
-        responded = True
-
-    if 'wiki' in incoming_msg:
+    if 'wiki' in incoming_msg and not responded:
         # return a corresponding wiki page
         r = requests.get('https://nl.wikipedia.org/wiki/' + incoming_msg[5:])
 
@@ -62,6 +40,21 @@ def bot():
             text = 'Ik kan geen fatsoenlijke wiki vinden op dit moment, alleen een foutmelding'
             message.media('https://http.cat/' + str(r.status_code))
         message.body(text)
+
+        responded = True
+
+    if 'vacatures' in incoming_msg and not responded:
+        # search for jobs
+        url = 'https://conspect.nl/vacatures'
+        req = urllib.request.Request(url)
+        text = urllib.request.urlopen(req).read()
+
+        soup = BeautifulSoup(str(text), 'html.parser')
+        functies = soup.findAll('div', {'class':'elementor-button-wrapper'})
+
+        message.body('Alle huidige vacatures bij Conspect')
+        for item in functies[3:-3]:
+            response.message(url + str(item.find('a')['href']))
 
         responded = True
 
